@@ -2848,5 +2848,10 @@
     ],
     "backgroundColor": "#B686DF",
     "isCollectedHidden": true
+  },
+  {
+    "name": "Test",
+    "cards": [],
+    "backgroundColor": "#222"
   }
 ]
