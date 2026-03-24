@@ -2420,10 +2420,6 @@
     "isCollectedHidden": false
   },
   {
-    "name": "test",
-    "cards": []
-  },
-  {
     "name": "Substitute",
     "cards": [
       {
@@ -2517,6 +2513,10 @@
     ],
     "backgroundColor": "#B686DF",
     "isCollectedHidden": false
+  },
+  {
+    "name": "test",
+    "cards": []
   },
   {
     "name": "Hydreigon",
