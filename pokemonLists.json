@@ -2420,101 +2420,6 @@
     "isCollectedHidden": false
   },
   {
-    "name": "Substitute",
-    "cards": [
-      {
-        "name": "Chansey",
-        "number": "152/214",
-        "set": "Lost Thunder",
-        "variant": "",
-        "image": "https://static.tcgcollector.com/content/images/23/8c/3d/238c3de848095b9677269686253502a732b84d0f17ede6dc4aa680411a14e4a1.jpg",
-        "collected": false
-      },
-      {
-        "name": "Chansey",
-        "number": "152/214",
-        "set": "Lost Thunder",
-        "variant": "Reverse Holo",
-        "image": "https://static.tcgcollector.com/content/images/23/8c/3d/238c3de848095b9677269686253502a732b84d0f17ede6dc4aa680411a14e4a1.jpg",
-        "collected": false
-      },
-      {
-        "name": "Cinccino",
-        "number": "183/162",
-        "set": "Temporal Forces",
-        "variant": "",
-        "image": "https://static.tcgcollector.com/content/content/images/cf/d4/aa/cfd4aad3ac9f0db49aaaee62fb6f25a3dcfeedf8c931933a986903525a2a1921.jpg",
-        "collected": false
-      },
-      {
-        "name": "Impidimp",
-        "number": "176/264",
-        "set": "Fusion Strike",
-        "variant": "",
-        "image": "https://static.tcgcollector.com/content/images/00/1e/8e/001e8e3f916ad09e0dadc61ee28bf41ee7f80e588e983ca36af4aae914852713.jpg",
-        "collected": true
-      },
-      {
-        "name": "Impidimp",
-        "number": "176/264",
-        "set": "Fusion Strike",
-        "variant": "Reverse Holo",
-        "image": "https://static.tcgcollector.com/content/images/00/1e/8e/001e8e3f916ad09e0dadc61ee28bf41ee7f80e588e983ca36af4aae914852713.jpg",
-        "collected": false
-      },
-      {
-        "name": "Meowth",
-        "number": "147/214",
-        "set": "Unbroken Bonds",
-        "variant": "",
-        "image": "https://static.tcgcollector.com/content/images/45/45/c0/4545c0e5f1932b943aa4bf8ad557f3b214a730fdbb925a220e476b8bf942504f.jpg",
-        "collected": true
-      },
-      {
-        "name": "Meowth",
-        "number": "147/214",
-        "set": "Unbroken Bonds",
-        "variant": "Reverse Holo",
-        "image": "https://static.tcgcollector.com/content/images/45/45/c0/4545c0e5f1932b943aa4bf8ad557f3b214a730fdbb925a220e476b8bf942504f.jpg",
-        "collected": false
-      },
-      {
-        "name": "Minccino",
-        "number": "182/162",
-        "set": "Temporal Forces",
-        "variant": "",
-        "image": "https://static.tcgcollector.com/content/content/images/fc/ef/09/fcef0996d422b1453f5e580d363428da56758305b24f89ef12953737c0373997.jpg",
-        "collected": false
-      },
-      {
-        "name": "Robo Substitute",
-        "number": "102/119",
-        "set": "Phantom Forces",
-        "variant": "",
-        "image": "https://static.tcgcollector.com/content/images/11/3b/4a/113b4a14521a132707a69a964b3fac0e38a2fbdafde1b2b278346f1ef4235969.jpg",
-        "collected": false
-      },
-      {
-        "name": "Robo Substitute",
-        "number": "102/119",
-        "set": "Phantom Forces",
-        "variant": "Reverse Holo",
-        "image": "https://static.tcgcollector.com/content/images/11/3b/4a/113b4a14521a132707a69a964b3fac0e38a2fbdafde1b2b278346f1ef4235969.jpg",
-        "collected": false
-      },
-      {
-        "name": "Robo Substitute",
-        "number": "102/119",
-        "set": "Phantom Forces",
-        "variant": "WC Deck 2015 (Primal Groudon: Alejandro Ng-Guzman)",
-        "image": "https://static.tcgcollector.com/content/images/11/3b/4a/113b4a14521a132707a69a964b3fac0e38a2fbdafde1b2b278346f1ef4235969.jpg",
-        "collected": false
-      }
-    ],
-    "backgroundColor": "#B686DF",
-    "isCollectedHidden": false
-  },
-  {
     "name": "Hydreigon",
     "cards": [
       {
@@ -2848,5 +2753,100 @@
     ],
     "backgroundColor": "#B686DF",
     "isCollectedHidden": true
+  },
+  {
+    "name": "Substitute",
+    "cards": [
+      {
+        "name": "Chansey",
+        "number": "152/214",
+        "set": "Lost Thunder",
+        "variant": "",
+        "image": "https://static.tcgcollector.com/content/images/23/8c/3d/238c3de848095b9677269686253502a732b84d0f17ede6dc4aa680411a14e4a1.jpg",
+        "collected": false
+      },
+      {
+        "name": "Chansey",
+        "number": "152/214",
+        "set": "Lost Thunder",
+        "variant": "Reverse Holo",
+        "image": "https://static.tcgcollector.com/content/images/23/8c/3d/238c3de848095b9677269686253502a732b84d0f17ede6dc4aa680411a14e4a1.jpg",
+        "collected": false
+      },
+      {
+        "name": "Cinccino",
+        "number": "183/162",
+        "set": "Temporal Forces",
+        "variant": "",
+        "image": "https://static.tcgcollector.com/content/content/images/cf/d4/aa/cfd4aad3ac9f0db49aaaee62fb6f25a3dcfeedf8c931933a986903525a2a1921.jpg",
+        "collected": false
+      },
+      {
+        "name": "Impidimp",
+        "number": "176/264",
+        "set": "Fusion Strike",
+        "variant": "",
+        "image": "https://static.tcgcollector.com/content/images/00/1e/8e/001e8e3f916ad09e0dadc61ee28bf41ee7f80e588e983ca36af4aae914852713.jpg",
+        "collected": true
+      },
+      {
+        "name": "Impidimp",
+        "number": "176/264",
+        "set": "Fusion Strike",
+        "variant": "Reverse Holo",
+        "image": "https://static.tcgcollector.com/content/images/00/1e/8e/001e8e3f916ad09e0dadc61ee28bf41ee7f80e588e983ca36af4aae914852713.jpg",
+        "collected": false
+      },
+      {
+        "name": "Meowth",
+        "number": "147/214",
+        "set": "Unbroken Bonds",
+        "variant": "",
+        "image": "https://static.tcgcollector.com/content/images/45/45/c0/4545c0e5f1932b943aa4bf8ad557f3b214a730fdbb925a220e476b8bf942504f.jpg",
+        "collected": true
+      },
+      {
+        "name": "Meowth",
+        "number": "147/214",
+        "set": "Unbroken Bonds",
+        "variant": "Reverse Holo",
+        "image": "https://static.tcgcollector.com/content/images/45/45/c0/4545c0e5f1932b943aa4bf8ad557f3b214a730fdbb925a220e476b8bf942504f.jpg",
+        "collected": false
+      },
+      {
+        "name": "Minccino",
+        "number": "182/162",
+        "set": "Temporal Forces",
+        "variant": "",
+        "image": "https://static.tcgcollector.com/content/content/images/fc/ef/09/fcef0996d422b1453f5e580d363428da56758305b24f89ef12953737c0373997.jpg",
+        "collected": false
+      },
+      {
+        "name": "Robo Substitute",
+        "number": "102/119",
+        "set": "Phantom Forces",
+        "variant": "",
+        "image": "https://static.tcgcollector.com/content/images/11/3b/4a/113b4a14521a132707a69a964b3fac0e38a2fbdafde1b2b278346f1ef4235969.jpg",
+        "collected": false
+      },
+      {
+        "name": "Robo Substitute",
+        "number": "102/119",
+        "set": "Phantom Forces",
+        "variant": "Reverse Holo",
+        "image": "https://static.tcgcollector.com/content/images/11/3b/4a/113b4a14521a132707a69a964b3fac0e38a2fbdafde1b2b278346f1ef4235969.jpg",
+        "collected": false
+      },
+      {
+        "name": "Robo Substitute",
+        "number": "102/119",
+        "set": "Phantom Forces",
+        "variant": "WC Deck 2015 (Primal Groudon: Alejandro Ng-Guzman)",
+        "image": "https://static.tcgcollector.com/content/images/11/3b/4a/113b4a14521a132707a69a964b3fac0e38a2fbdafde1b2b278346f1ef4235969.jpg",
+        "collected": false
+      }
+    ],
+    "backgroundColor": "#B686DF",
+    "isCollectedHidden": false
   }
 ]
