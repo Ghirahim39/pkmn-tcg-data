@@ -2515,6 +2515,10 @@
     "isCollectedHidden": false
   },
   {
+    "name": "test",
+    "cards": []
+  },
+  {
     "name": "Hydreigon",
     "cards": [
       {
@@ -2848,9 +2852,5 @@
     ],
     "backgroundColor": "#B686DF",
     "isCollectedHidden": true
-  },
-  {
-    "name": "test",
-    "cards": []
   }
 ]
