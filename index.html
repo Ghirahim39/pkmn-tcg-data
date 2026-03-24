@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Card Home</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #333;
+            border-radius: 10px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #444;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .highlighted {
+            background-color: #4CAF50; /* Highlighted button color */
+            border: 2px solid #3e8e41;
+        }
+        .message {
+            color: #4CAF50;
+            margin-top: 20px;
+        }
+        .delete-message {
+            color: red;
+            margin-top: 20px;
+        }
+        .list-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .list-buttons div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Increased from 300px */
+    margin-bottom: 10px;
+}
+.list-buttons button {
+    text-align: center;
+    font-size: 24px;
+    width: 100%;
+    min-width: 250px; /* Add this line for a minimum width */
+    cursor: grab;
+    white-space: nowrap; /* Prevent line breaks */
+}
+        #completionProgress {
+            font-size: 24px; /* Adjust the size as needed */
+            font-weight: bold;
+        }
+/* Modal button styles */
+.modal-button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #444;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-button:hover {
+    background-color: #555;
+}
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Black with opacity */
+            color: #fff;
+            text-align: center;
+        }
+        .modal-content {
+            position: relative;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15% auto;
+            width: 60%;
+        }
+        .modal button {
+            margin: 10px;
+            font-size: 18px;
+        }
+        .dragging {
+            opacity: 0.5;
+        }
+    </style>
+  <link rel="icon" href="favicon.ico">
+</head>
+<body>
+<button id="toggleButton" onclick="toggleBackground()" style="position: fixed; top: 0px; right: 0px; background: none; border: none; cursor: pointer;">
+    <img id="toggleButtonImage" src="https://cdn2.iconfinder.com/data/icons/minimal-4/100/pokeball-512.png" alt="Toggle Background" style="width: 60px; height: auto;">
+</button>
+
+    <div class="container">
+        <h1>Pokémon Card Tracker</h1>
+        <button id="addListButton" onclick="addList()">➕ Add List</button>
+        <button onclick="importLists()">⬇️ Import Lists</button>
+        <button onclick="exportLists()">⬆️ Export Lists</button>
+        <button onclick="enableDeleteMode()">❌ Delete List</button>
+        <div class="message" id="message"></div>
+        <div class="list-buttons" id="listButtons"></div>
+<div id="dragInfo" class="message" style="display: none; color: white;">Drag and drop the lists to rearrange them.</div>
+    </div>
+
+<!-- Modal for adding a new list -->
+<div id="addListModal" class="modal">
+    <div class="modal-content">
+        <h2>Create a New List</h2>
+        <input type="text" id="listNameInput" placeholder="Enter list name" style="padding: 10px; font-size: 16px; width: 100%; margin-bottom: 20px; border-radius: 5px;">
+        <button onclick="addNewList()" class="modal-button">Create List</button>
+        <button onclick="closeAddListModal()" class="modal-button">Cancel</button>
+    </div>
+</div>
+
+    <!-- Modal for import confirmation -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <h2>Warning</h2>
+            <p>Importing new lists will overwrite your existing lists. Do you want to continue?</p>
+            <button onclick="handleImportConfirmation(true)">Yes, Import</button>
+            <button onclick="handleImportConfirmation(false)">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Modal for delete confirmation -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h2>Warning</h2>
+            <p id="deleteMessage"></p>
+            <button onclick="handleDeleteConfirmation(true)">Yes, Delete</button>
+            <button onclick="handleDeleteConfirmation(false)">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+// Load the list of saved lists
+function loadLists() {
+    const lists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+    const listButtonsDiv = document.getElementById('listButtons');
+    const messageDiv = document.getElementById('message');
+    const addListButton = document.getElementById('addListButton');
+    const dragInfoDiv = document.getElementById('dragInfo');
+    listButtonsDiv.innerHTML = '';
+
+    lists.forEach((list, index) => {
+        const listButton = document.createElement('button');
+        listButton.textContent = list.name;
+        listButton.draggable = true;
+        listButton.setAttribute('data-index', index);
+        listButton.ondragstart = dragStart;
+        listButton.ondragover = dragOver;
+        listButton.ondrop = drop;
+        listButton.ondragend = dragEnd;
+        listButton.onclick = function() { openList(index); };
+
+        // Retrieve the saved background color for the list (or default to #222)
+        const savedLists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+        const listColor = savedLists[index]?.backgroundColor || '#222';  // Default color if no background color
+
+        // Apply border if the background color is different from the default
+if (listColor !== '#222') {  // Apply inward border if color is different from default
+    listButton.style.boxShadow = `inset 0 0 0 2px ${listColor}`; // Inward shadow effect
+} else {
+    listButton.style.boxShadow = 'none'; // No shadow if default color
+}
+
+        const listDiv = document.createElement('div');
+        listDiv.appendChild(listButton);
+        listButtonsDiv.appendChild(listDiv);
+    });
+
+    if (lists.length < 2) {
+        dragInfoDiv.style.display = 'none';
+    } else {
+        dragInfoDiv.style.display = 'block';
+    }
+
+    // Handle the "Add List" button highlight
+    if (lists.length === 0) {
+        messageDiv.textContent = "No lists found. Click 'Add List' to create one.";
+        addListButton.classList.add('highlighted'); // Highlight the 'Add List' button
+    } else {
+        messageDiv.textContent = "";
+        addListButton.classList.remove('highlighted'); // Remove highlight if there are lists
+    }
+}
+
+        // Open a specific list
+        function openList(index) {
+            localStorage.setItem('currentList', index);
+            window.location.href = "list.html"; // Open the list page
+        }
+// Check if the background preference is stored in localStorage
+let isBackgroundImage = localStorage.getItem('backgroundImage') === 'true';
+
+// Apply the saved background preference on page load
+if (isBackgroundImage) {
+    document.body.style.backgroundImage = "url('bg.png')";
+    document.body.style.backgroundSize = "cover"; 
+    document.body.style.backgroundPosition = "center center"; 
+    document.getElementById('toggleButtonImage').src = "20th_Anniversary_logo.png"; // Image for background on
+} else {
+    document.body.style.backgroundColor = "#222"; 
+    document.getElementById('toggleButtonImage').src = "https://cdn2.iconfinder.com/data/icons/minimal-4/100/pokeball-512.png"; // Default image
+}
+
+// Toggle background function
+function toggleBackground() {
+    const toggleButtonImage = document.getElementById('toggleButtonImage'); // Get the button image
+    if (isBackgroundImage) {
+        document.body.style.backgroundColor = "#222"; 
+        document.body.style.backgroundImage = ''; 
+        toggleButtonImage.src = "https://cdn2.iconfinder.com/data/icons/minimal-4/100/pokeball-512.png"; // Change to default image
+        localStorage.setItem('backgroundImage', 'false'); 
+    } else {
+        document.body.style.backgroundImage = "url('bg.png')";
+        document.body.style.backgroundSize = "cover"; 
+        document.body.style.backgroundPosition = "center center"; 
+        toggleButtonImage.src = "20th_Anniversary_logo.png"; // Change the image for background
+        localStorage.setItem('backgroundImage', 'true'); 
+    }
+
+    // Toggle the background state and save it
+    isBackgroundImage = !isBackgroundImage; // Toggle the background state
+    localStorage.setItem('backgroundImage', isBackgroundImage ? 'true' : 'false'); // Save the updated state
+}
+
+
+
+// Add a new list by displaying a modal
+function addList() {
+    const modal = document.getElementById('addListModal');
+    const inputField = document.getElementById('listNameInput');
+    modal.style.display = 'block'; // Show the modal
+    setTimeout(function() {
+        inputField.value = ''; // Clear the input field
+        inputField.focus(); // Automatically focus the input field
+    }, 0); // Use a slight delay to ensure the modal is fully rendered
+}
+
+// Create list when "Enter" is pressed
+document.getElementById('listNameInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent default action (form submission)
+        addNewList(); // Call the function to create the list
+    }
+});
+
+
+// Function to close the Add List modal
+function closeAddListModal() {
+    const modal = document.getElementById('addListModal');
+    modal.style.display = 'none'; // Hide the modal
+}
+
+// Add the new list after the user enters a name
+function addNewList() {
+    const listName = document.getElementById('listNameInput').value;
+    if (listName) {
+        const lists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+        lists.push({
+            name: listName,
+            cards: []
+        });
+        localStorage.setItem('pokemonLists', JSON.stringify(lists));
+        loadLists(); // Reload the lists after adding a new one
+        showMessage(`List '${listName}' added successfully!`);
+        closeAddListModal(); // Close the modal after adding the list
+    } else {
+        showMessage("Please enter a name for the new list.");
+    }
+}
+
+        // Drag events
+        function dragStart(event) {
+            event.dataTransfer.setData('text', event.target.dataset.index);
+            event.target.classList.add('dragging');
+        }
+
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        function drop(event) {
+            event.preventDefault();
+            const draggedIndex = event.dataTransfer.getData('text');
+            const targetIndex = event.target.dataset.index;
+            if (draggedIndex !== targetIndex) {
+                const lists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+                const draggedList = lists[draggedIndex];
+                lists.splice(draggedIndex, 1);
+                lists.splice(targetIndex, 0, draggedList);
+                localStorage.setItem('pokemonLists', JSON.stringify(lists));
+                loadLists();
+            }
+        }
+
+        function dragEnd(event) {
+            event.target.classList.remove('dragging');
+        }
+
+
+        // Export lists to a file
+        function exportLists() {
+            const lists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+            const blob = new Blob([JSON.stringify(lists, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'pokemonLists.json';
+            link.click();
+        }
+
+        // Import lists from a file
+        function importLists() {
+            const modal = document.getElementById('importModal');
+            modal.style.display = 'block'; // Show the modal
+        }
+
+        // Handle the import confirmation (Yes/No)
+        function handleImportConfirmation(shouldImport) {
+            const modal = document.getElementById('importModal');
+            modal.style.display = 'none'; // Hide the modal
+
+            if (shouldImport) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = function(event) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(fileEvent) {
+                        try {
+                            const importedLists = JSON.parse(fileEvent.target.result);
+                            localStorage.setItem('pokemonLists', JSON.stringify(importedLists));
+                            loadLists();
+                            showMessage('Lists imported successfully!');
+                        } catch (e) {
+                            showMessage('Error importing lists. Please ensure the file is valid.');
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            } else {
+                showMessage("Import canceled. Your lists were not overwritten.");
+            }
+        }
+
+        // Enable delete mode where users can select a list to delete
+        function enableDeleteMode() {
+            const lists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+            const listButtonsDiv = document.getElementById('listButtons');
+            const messageDiv = document.getElementById('message');
+            
+            // Clear the previous content
+            listButtonsDiv.innerHTML = ''; 
+
+            // Reset any previously applied delete-message class to ensure no other messages are affected
+            messageDiv.classList.remove('delete-message'); 
+            
+            // Set message to "Click on a list to delete it" and add the delete-message class
+            messageDiv.textContent = "Click on a list to delete it.";
+            messageDiv.classList.add('delete-message'); // Apply the red color for the delete message
+
+            // Add buttons for each list
+            lists.forEach((list, index) => {
+                const listButton = document.createElement('button');
+                listButton.textContent = `Delete ${list.name}`;
+                listButton.onclick = function() { confirmDeleteList(index); };
+
+                const listDiv = document.createElement('div');
+                listDiv.appendChild(listButton);
+
+                listButtonsDiv.appendChild(listDiv);
+            });
+        }
+
+        // Confirm and show delete modal
+function confirmDeleteList(index) {
+    localStorage.setItem('deleteIndex', index); // Store the index of the list to delete
+    const lists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+    const listName = lists[index].name;
+    const modal = document.getElementById('deleteModal');
+    const deleteMessage = document.getElementById('deleteMessage');
+    deleteMessage.textContent = `Are you sure you want to delete the list '${listName}'?`;
+    modal.style.display = 'block'; // Show the delete confirmation modal
+}
+
+
+        // Handle delete confirmation (Yes/No)
+function handleDeleteConfirmation(shouldDelete) {
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'none'; // Hide the modal
+
+    if (shouldDelete) {
+        const lists = JSON.parse(localStorage.getItem('pokemonLists')) || [];
+        const deleteIndex = parseInt(localStorage.getItem('deleteIndex'), 10);
+
+        if (!isNaN(deleteIndex) && lists[deleteIndex]) {
+            const listName = lists[deleteIndex].name;
+            lists.splice(deleteIndex, 1);
+            localStorage.setItem('pokemonLists', JSON.stringify(lists));
+            loadLists();
+            showMessage(`List '${listName}' deleted successfully!`);
+        } else {
+            showMessage("Error: Unable to delete list.");
+        }
+
+        localStorage.removeItem('deleteIndex'); // Clear the stored delete index
+    } else {
+        loadLists();
+    }
+}
+
+
+        // Display a message on the page
+function showMessage(message) {
+    const messageDiv = document.getElementById('message');
+
+    // Reset classes
+    messageDiv.classList.remove('delete-message', 'message');
+
+    // Check if the message is an error about importing lists
+    if (message.includes("Error importing lists")) {
+        messageDiv.classList.add('delete-message'); // Apply red color
+    } else {
+        messageDiv.classList.add('message'); // Default green color
+    }
+
+    messageDiv.textContent = message;
+}
+
+
+        // Initialize the page by loading the lists
+        document.addEventListener('DOMContentLoaded', loadLists);
+    </script>
+  <footer class="site-footer">© 2026 Ghirahim</footer>
+</body>
+</html>
